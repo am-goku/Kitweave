@@ -1,5 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import { cn } from "@/lib/utils";
+import { ComponentPreview } from "@/components/docs/component-preview";
 
 export function mdxComponents(components: MDXComponents): MDXComponents {
   return {
@@ -63,6 +64,10 @@ export function mdxComponents(components: MDXComponents): MDXComponents {
         {...props}
       />
     ),
+    align: ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+      <div className={cn("text-center", className)} {...props} />
+    ),
+    ComponentPreview,
     ...components,
   };
 };
