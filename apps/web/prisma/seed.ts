@@ -1,8 +1,12 @@
 import { prisma } from '@/lib/db'
+import { Component } from '@prisma/client';
 import 'dotenv/config'
 
 
 async function main() {
+
+  console.log('Seeding components...')
+
   // Create a dummy user first
   const user = await prisma.user.upsert({
     where: { email: 'demo@kitweaver.ai' },
@@ -50,11 +54,16 @@ async function main() {
     }
   ]
 
+  const promises: Promise<Component>[] = [];
+
   for (const component of components) {
-    await prisma.component.create({
+    const p = prisma.component.create({
       data: component,
     })
+    promises.push(p)
   }
+
+  await Promise.all(promises)
 
   console.log(`Seeded ${components.length} components`)
 }

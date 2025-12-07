@@ -23,6 +23,7 @@ export async function GET(req: Request) {
       isPublic: true,
     };
 
+
     if (query) {
       where.OR = [
         { name: { contains: query, mode: "insensitive" } },
@@ -53,8 +54,8 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     // mock user ID from session (replace with actual auth)
-    const userId = "temp-user-id"; 
-    
+    const userId = "temp-user-id";
+
     const body = await req.json();
     const data = componentSchema.parse(body);
 
@@ -66,6 +67,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(component);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
