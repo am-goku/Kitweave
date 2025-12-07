@@ -11,7 +11,7 @@ export function Sidebar() {
   const links = [
     { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
     { name: "My Components", href: "/dashboard/components", icon: Box },
-    { name: "AI Generations", href: "/dashboard/generations", icon: Sparkles },
+    { name: "Generator", href: "/dashboard/generate", icon: Sparkles },
     { name: "Billing", href: "/dashboard/billing", icon: CreditCard },
     { name: "Settings", href: "/dashboard/settings", icon: Settings },
   ];
