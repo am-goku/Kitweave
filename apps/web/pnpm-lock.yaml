@@ -30,9 +30,9 @@ importers:
       '@types/pg':
         specifier: ^8.15.6
         version: 8.15.6
-      dotenv:
-        specifier: ^17.2.3
-        version: 17.2.3
+      dotenv-flow:
+        specifier: ^4.1.0
+        version: 4.1.0
 
 packages:
 
@@ -107,12 +107,12 @@ packages:
   destr@2.0.5:
     resolution: {integrity: sha512-ugFTXCtDZunbzasqBxrK93Ik/DRYsO6S/fedkWEMKqt04xZ4csmnmwGDBAb07QWNaGMAmnTIemsYZCksjATwsA==}
 
+  dotenv-flow@4.1.0:
+    resolution: {integrity: sha512-0cwP9jpQBQfyHwvE0cRhraZMkdV45TQedA8AAUZMsFzvmLcQyc1HPv+oX0OOYwLFjIlvgVepQ+WuQHbqDaHJZg==}
+    engines: {node: '>= 12.0.0'}
+
   dotenv@16.6.1:
     resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
-    engines: {node: '>=12'}
-
-  dotenv@17.2.3:
-    resolution: {integrity: sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==}
     engines: {node: '>=12'}
 
   effect@3.18.4:
@@ -325,9 +325,11 @@ snapshots:
 
   destr@2.0.5: {}
 
-  dotenv@16.6.1: {}
+  dotenv-flow@4.1.0:
+    dependencies:
+      dotenv: 16.6.1
 
-  dotenv@17.2.3: {}
+  dotenv@16.6.1: {}
 
   effect@3.18.4:
     dependencies:

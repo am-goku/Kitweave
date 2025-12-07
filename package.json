@@ -12,11 +12,7 @@
     "seed": "cd apps/web && npx tsx prisma/seed.ts"
   },
   "devDependencies": {
-    "prettier": "latest",
-    "prisma": "^7.1.0"
+    "prettier": "latest"
   },
-  "packageManager": "pnpm@9.0.0",
-  "dependencies": {
-    "@prisma/client": "^7.1.0"
-  }
+  "packageManager": "pnpm@9.0.0"
 }

@@ -17,14 +17,11 @@ export default async function ComponentsPage({
   const host = process.env.NEXT_PUBLIC_APP_URL || "localhost:3000";
   const apiUrl = `${protocol}://${host}/api/components?query=${query}&tags=${tags}`;
 
-  console.log(apiUrl)
-
   let components = [];
   try {
      const res = await fetch(apiUrl, { cache: 'no-store' });
      if (res.ok) {
         components = await res.json();
-        console.log(components)
      }
   } catch (err) {
     console.error("Fetch error", err);

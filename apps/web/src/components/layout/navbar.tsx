@@ -9,7 +9,7 @@ export function Navbar() {
   const pathname = usePathname();
   
   const navItems = [
-    { name: "Components", href: "/components" },
+    { name: "Components", href: "/dashboard/components" },
     { name: "Docs", href: "/docs" },
     { name: "Pricing", href: "/pricing" },
   ];

@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/db'
 import { Component } from '@prisma/client';
-import 'dotenv/config'
+import 'dotenv-flow/config'
 
 
 async function main() {

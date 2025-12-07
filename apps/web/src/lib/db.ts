@@ -1,13 +1,11 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
-import 'dotenv/config'
+import 'dotenv-flow/config'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
-
-console.log(process.env.DATABASE_URL || 'No DATABASE_URL found')
 
 const connectionString: string = process.env.DATABASE_URL as string;
 if (!connectionString) {

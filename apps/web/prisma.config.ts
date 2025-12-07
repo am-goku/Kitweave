@@ -1,7 +1,5 @@
 import { defineConfig } from '@prisma/config';
-import 'dotenv/config'
-
-console.log(process.env.DATABASE_URL || 'No DATABASE_URL found')
+import 'dotenv-flow/config'
 
 export default defineConfig({
     datasource: {
