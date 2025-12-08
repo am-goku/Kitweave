@@ -1,6 +1,23 @@
 import { createOpenAI } from '@ai-sdk/openai';
 import { streamText } from 'ai';
 
+const system_rules = `You are a precision React code generator. ` +
+  `Your only job is to output pure, valid, executable TSX code — nothing else.\n\n` +
+  `CRITICAL RULES - OBEY EXACTLY:\n` +
+  `- NEVER wrap code in \`\`\`tsx or \`\`\` or any markdown\n` +
+  `- NEVER add explanations, comments, or text outside the code\n` +
+  `- NEVER add any non-code text\n` +
+  `- NEVER say "Here is the component" or "Sure!" or anything\n` +
+  `- NEVER provide multiple options or multiple components\n` +
+  `- Output ONLY the raw TSX starting with imports or the component directly\n` +
+  `- Must end with \`export default ComponentName\`\n` +
+  `- The component should be default export\n` +
+  `- Use lucide-react icons, shadcn/ui components from '@/components/ui/*'\n` +
+  `- Make it beautiful with Tailwind: gradients, glassmorphism, smooth shadows, rounded-xl\n` +
+  `- If animation is requested, use framer-motion\n` +
+  `- You are forbidden from adding any non-code text. This is enforced.\n\n` +
+  `Failure to follow these rules exactly will break the app. Output only code.`
+
 // Create a Groq provider instance
 // The Vercel AI SDK's OpenAI provider is compatible with Groq
 const groq = createOpenAI({
@@ -17,26 +34,14 @@ export async function POST(req: Request) {
 
   try {
     const result = streamText({
-      model: groq('llama-3.3-70b-versatile'),
-      system: `You are an expert React component developer using Tailwind CSS and shadcn/ui.
-    You will be given a request to generate a React component.
-    
-    Rules:
-    1. Output ONLY the raw TSX code. Do not wrap it in markdown code blocks (no \`\`\`tsx).
-    2. Use 'lucide-react' for icons.
-    3. Use 'framer-motion' for animations if requested.
-    4. Use standard HTML tags styled with Tailwind CSS.
-    5. Be creative and make the design look premium (gradients, rounded corners, subtle shadows).
-    6. Do not include imports for local components unless they are standard shadcn/ui ones you assume exist (like Button, Input).
-    7. If you use standard UI components, assume they are at '@/components/ui/*'.
-    8. The component must be exported as default.
-    `,
-      messages: [
-        { role: 'user', content: prompt }
-      ],
+      model: groq(process.env.GROQ_MODEL as string), // This model follows instructions MUCH better
+      temperature: 0.3, // Lower = more deterministic
+      maxOutputTokens: 4096,
+      system: system_rules,
+      messages: [{ role: 'user', content: system_rules + "\n\n" + prompt }],
     });
 
-    return result.toTextStreamResponse();
+    return result.toUIMessageStreamResponse();
   } catch (error) {
     console.error('Error generating component:', error);
     return { success: false, error: 'Failed to generate component' };
