@@ -1,15 +1,17 @@
 'use client';
 
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import { useCompletion } from '@ai-sdk/react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Loader2, Wand2 } from 'lucide-react';
-import { ComponentPreview } from '@/components/docs/component-preview';
+import { Loader2, Wand2, Copy, Check } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function GeneratePage() {
     const [prompt, setPrompt] = useState('');
+    const [copied, setCopied] = useState(false);
 
     const { completion, complete, isLoading } = useCompletion({
         api: '/api/ai/generate',
@@ -20,9 +22,12 @@ export default function GeneratePage() {
         await complete(prompt);
     };
 
-    useEffect(() => {
-        console.log(completion, isLoading);
-    }, [completion, isLoading]);
+    const handleCopy = async () => {
+        if (!completion) return;
+        await navigator.clipboard.writeText(completion);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
 
     return (
         <div className="container py-8 space-y-8">
@@ -69,14 +74,55 @@ export default function GeneratePage() {
 
                 {/* Output Section */}
                 <div className="space-y-4">
-                    <h2 className="text-lg font-semibold">Generated Output</h2>
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-lg font-semibold">Generated Code</h2>
+                        {completion && (
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={handleCopy}
+                                className="gap-2"
+                            >
+                                {copied ? (
+                                    <>
+                                        <Check className="h-4 w-4" />
+                                        Copied!
+                                    </>
+                                ) : (
+                                    <>
+                                        <Copy className="h-4 w-4" />
+                                        Copy Code
+                                    </>
+                                )}
+                            </Button>
+                        )}
+                    </div>
 
-                    <ComponentPreview name="GeneratedComponent" className="my-0">
-                        {completion || '// Generated code will appear here...'}
-                    </ComponentPreview>
+                    <div className="relative rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800">
+                        {completion ? (
+                            <SyntaxHighlighter
+                                language="tsx"
+                                style={vscDarkPlus}
+                                customStyle={{
+                                    margin: 0,
+                                    padding: '1.5rem',
+                                    fontSize: '0.875rem',
+                                    maxHeight: '600px',
+                                }}
+                                showLineNumbers
+                            >
+                                {completion}
+                            </SyntaxHighlighter>
+                        ) : (
+                            <div className="p-8 text-center text-muted-foreground">
+                                <Wand2 className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                                <p>Generated code will appear here...</p>
+                            </div>
+                        )}
+                    </div>
 
                     <p className="text-xs text-muted-foreground text-center">
-                        * Note: The live preview might not render dynamic AI code perfectly yet. Copy the code to test it.
+                        💡 Tip: Copy the code and paste it into your project to see it in action!
                     </p>
                 </div>
             </div>
