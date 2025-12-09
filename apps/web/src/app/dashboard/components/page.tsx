@@ -3,6 +3,8 @@ import { TagFilter } from "@/components/ui/tag-filter";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
+import Link from "next/link";
+
 // This is a server component that fetches data
 export default async function ComponentsPage({
   searchParams,
@@ -12,17 +14,17 @@ export default async function ComponentsPage({
   const resolvedSearchParams = await searchParams; // Next.js 15 requires awaiting searchParams
   const query = resolvedSearchParams?.query || "";
   const tags = resolvedSearchParams?.tags || "";
-  
+
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
   const host = process.env.NEXT_PUBLIC_APP_URL || "localhost:3000";
   const apiUrl = `${protocol}://${host}/api/components?query=${query}&tags=${tags}`;
 
   let components = [];
   try {
-     const res = await fetch(apiUrl, { cache: 'no-store' });
-     if (res.ok) {
-        components = await res.json();
-     }
+    const res = await fetch(apiUrl, { cache: 'no-store' });
+    if (res.ok) {
+      components = await res.json();
+    }
   } catch (err) {
     console.error("Fetch error", err);
   }
@@ -35,8 +37,8 @@ export default async function ComponentsPage({
       </div>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-         <SearchInput />
-         <TagFilter />
+        <SearchInput />
+        <TagFilter />
       </div>
 
       {components.length === 0 ? (
@@ -50,8 +52,8 @@ export default async function ComponentsPage({
             <Card key={component.id} className="border-zinc-800 bg-zinc-950 hover:border-zinc-700 transition-colors">
               <CardHeader>
                 <div className="flex items-start justify-between">
-                    <CardTitle className="text-lg">{component.name}</CardTitle>
-                    {component.isPublic && <Badge variant="secondary" className="text-xs">Public</Badge>}
+                  <CardTitle className="text-lg">{component.name}</CardTitle>
+                  {component.isPublic && <Badge variant="secondary" className="text-xs">Public</Badge>}
                 </div>
                 <CardDescription className="line-clamp-2">{component.description || "No description provided."}</CardDescription>
               </CardHeader>
@@ -64,8 +66,8 @@ export default async function ComponentsPage({
                   ))}
                 </div>
                 <div className="rounded-lg bg-zinc-900 p-4 text-xs font-mono text-zinc-300 overflow-hidden h-24 relative">
-                    <div className="absolute inset-0 bg-linear-to-b from-transparent to-zinc-900/90" />
-                    <pre>{component.code}</pre>
+                  <div className="absolute inset-0 bg-linear-to-b from-transparent to-zinc-900/90" />
+                  <pre>{component.code}</pre>
                 </div>
               </CardContent>
             </Card>
