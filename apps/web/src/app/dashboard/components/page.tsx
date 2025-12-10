@@ -3,8 +3,6 @@ import { TagFilter } from "@/components/ui/tag-filter";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-import Link from "next/link";
-
 // This is a server component that fetches data
 export default async function ComponentsPage({
   searchParams,
